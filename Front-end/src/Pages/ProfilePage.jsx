@@ -5,7 +5,6 @@ import { Camera, Mail, User } from "lucide-react";
 const ProfilePage = () => {
   const { authUser, isUpdatingProfile, updateProfile } = useAuthStore();
   const [selectedImg, setSelectedImg] = useState(null);
-  const [error, setError] = useState(null); // Add state for error
 
   const handleImageUpload = async (e) => {
     const file = e.target.files[0];
@@ -18,12 +17,7 @@ const ProfilePage = () => {
     reader.onload = async () => {
       const base64Image = reader.result;
       setSelectedImg(base64Image);
-      try {
-        await updateProfile({ profilePic: base64Image });
-        setError(null); // Clear error if update is successful
-      } catch (err) {
-        setError("Failed to update profile. Please try again."); // Set error message
-      }
+      await updateProfile({ profilePic: base64Image });
     };
   };
 
@@ -69,7 +63,6 @@ const ProfilePage = () => {
             <p className="text-sm text-zinc-400">
               {isUpdatingProfile ? "Uploading..." : "Click the camera icon to update your photo"}
             </p>
-            {error && <p className="text-sm text-red-500">{error}</p>} {/* Display error message */}
           </div>
 
           <div className="space-y-6">
